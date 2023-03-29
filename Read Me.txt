@@ -1,0 +1,2 @@
+﻿Both 5.0" and 7.0" screens have the same 800 x 480 px resolution.
+Therefore, 5.0" version documentation also applies to 7.0" version.

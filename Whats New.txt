@@ -1,0 +1,453 @@
+﻿VK4GHZ Nextion for K3NG Rotator Controller
+
+V2022-05-03
+
+Fix: 
+• 7.0" About page - Incorrect model number 'K050' fixed.
+    Should have been 'K070'
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-10-23
+
+New: 3.2" 3.5" 5.0" 7.0" Start up behaviour.
+     K3NG code v2021.10.19.04 or later REQUIRED.
+
+     Nextion will now wait for gSC data to arrive from Arduino before
+     moving onto designated start screen.
+
+     If gSC has not been received within 5 seconds "nexSerial FAIL" 
+     message appears to prompt investigation, but is still listening for gSC.
+
+     In rotator_features.h file, comment out these two lines (default)
+     //#define OPTION_DEPRECATED_NEXTION_INIT_CODE_1
+     // #define OPTION_DEPRECATED_NEXTION_INIT_CODE_2
+
+     If sending gSC needs to be delayed at Arduino, in rotator_settings.h,
+     increase value from default 0.
+     #define NEXTION_GSC_STARTUP_DELAY 0
+
+
+Fix: 
+• 5.0" 7.0" ABCKeyboard page - '7' button not working if coming from Large Az 
+     page after pressing Go To button.
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-07-03
+
+Fix:
+• 5.0", 7.0" Presets page - Return button not working when coming from BizgAz page.
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-06-29
+
+Note:
+* This update will reset your existing Nextion settings stored in EEPROM
+  Make a note of any preset Az & name tags, UDF name tags, and config settings
+  before updating.
+
+
+New:
+• 3.2", 3.5", 5.0", 7.0" - BigAz page.
+  Large Azimuth only gauge for terrestrial (non elevation/tracking) work.  
+  Touch middle of gauge for keypad entry.
+  Various buttons, icons and features depending on screen size.
+  3.2" has touch points every 30°
+  3.5" has touch points every 30°, two alternate gauge backgrounds.
+  5.0" has touch points every 15°, two alternate gauge backgrounds.
+  7.0" has touch points every 15°, two alternate gauge backgrounds.
+
+  Long touch middle of Az gauge to change to alternate gauge. 
+  Preselect alternate 1 / 2 gauge background on config page.
+
+• 3.5", 5.0" 7.0" Config1 page - New button to select BiG Az gauge as default
+  start up screen.
+
+
+Fix:
+• 3.5", 5.0", 7.0" Clock page - font preview incorrect when changing colours.
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-05-21
+
+Note:
+* This update will reset your existing Nextion settings stored in EEPROM
+  Make a note of any preset Az & name tags, UDF name tags, and config settings
+  before updating.
+
+
+New:
+• 3.2", 3.5", 5.0" Clock page - Large clock & Grid Square, dark theme.
+  Colours and fonts settable on 3.5" and 5.0: variants.
+  Edit .hmi in Nextion Editor to change colour & fonts for 3.2" variant.
+
+• 3.5", 5.0" Big Gauges page - Provision for 2 alternate Azimuth gauge
+  backgrounds. Long touch middle of Az gauge to change to alternate gauge.
+
+• 3.5", 5.0" Config1 page - New toggle button 'Alt Az Gauge' to pre-select 
+  which alternate big gauge is displayed.
+
+• Version for 7.0" NX8048K070. 7.0" screen has same resolution (800 x 480 px)
+  as the 5.0", therefore uses the same assets from the 5.0" project.
+
+
+Fix:
+• 5.0" Big Gauges page - there was no direct method to reset the screen saver, 
+  except for returning to normal gauges page, and then back to big gauges page.
+  Pressing top left or top right of gauges or in between gauges will reset 
+  screen saver timer.
+
+• 3.5 Big Gauges page - there was no method to reset the screen saver, 
+  except for returning to normal gauges page, and then back to big gauges page.
+  Pressing along the top of Az/El row will reset screen saver timer.
+
+• 3.5" Big gauges page - Timer event code in tmrSS was missing, therefore 
+  screen saver timer never worked. Fixed.
+
+• 3.5" Contest page - Timer event code in tmrSS was missing, therefore 
+  screen saver timer never worked. Fixed.
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-05-09
+
+Note:
+* This update will reset your existing Nextion settings stored in EEPROM
+  Make a note of any preset Az & name tags, UDF name tags, and config settings.
+
+
+Fix:
+• Assigning name to UDF4 name tag affected Preset name tag foreground colour
+  due to overlapping EEPROM addresses.
+
+• Satellite page - Park button was visible if Park feature was not enabled.
+  (Thanks Andrej S56VLV)
+
+
+Change:
+• Program.s - All EEPROM register addresses now properly defined here.
+  12 bytes allocated to azimuth & elevation presets, and name tags.
+  Refer to EEPROM Table pdf.
+
+• Name tag length increased from 6 to 8 characters. 
+  YMMV with wide characters 'W' 'M' etc where screen real estate is limited.
+
+• 5.0" MainGauges pages - Bigger Expand button to access Big Gauges page
+
+• Diagnostics page - now responsive to features that are enabled.
+  ie; Buttons hiddens if not relevant to Arduino feature settings.
+
+• Converter page - results window wider and smaller font to fit in result string.
+
+• 3.2" Bolder fonts on configuration pages to improve readability 
+
+
+New:
+• Contest page - features 8 preset buttons.
+  Presets are Azimuth only.  ie; Elevation forced to zero.
+
+• Keypad page - short touch of CLR button will backspace.
+  Long touch will clear entry (as it should have been).
+
+• Introduction of 3.2" version!
+  This is a basic 'no frills' version squeezed into the limited 400 x 240 px
+  screen that will suit an operator who wants a simple K3NG interface, but
+  with much more functionality than what an LCD & switches can offer.
+
+  There is no internal Moon/Sun/Sat tracking functionality, no help screens,
+  no Rotor calibration page, and no set colours page, no ABC keyboard (and
+  therefore no functionality associated with entering in alpha characters) 
+  ie; no Go To grid square, no Preset name tags, no UDF page. 
+  Colours can be changed by editing the .hmi file with the Nextion Editor..
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-04-06-01-01
+
+Change:
+• Splash page - timer 'tmrReadySC' (that waits xxx mS before expecting to see
+  global system capabilities data from MCU) timing has been increased/relaxed.
+  5.0" 250 mS to 500 mS 
+  3.5" 250 mS to 450 mS
+  To accommodate MCUs that are slow to send out gSC data resulting in the
+  Nextion defaulting incorrectly to basic Az only 'cheeseburger' mode.
+
+
+New:
+• Config1 page - Audible Alert on/off button 
+  Config1 page - Audible Alert automatically enable on power up button
+  Config1 page - Audible Alert automatically disable when tracking button
+
+• Rotor Calibration page - Sensor Plot (waveforms) button
+  
+• Waveforms page - graphs Az & El data vs time
+  Experimental, but could be useful to visualise faulty sensor data
+
+• Features page - Audible Alert status
+
+• Main page - Audible Alert status icon
+
+• MainGauges page - Audible Alert status icon
+
+• MoonSun page - Audible Alert status icon
+
+• Sat page - Audible Alert status icon
+
+• TrackSet1 page - Tracking Check Intervals 
+
+• TrackSet2 page - Tracking Rotation Intervals
+
+• TrackSet3 page - Degree Differential Thresholds
+
+• Diagnostics page - gV2 variable added
+
+
+New/Change:
+• Program.s - Global Button Status variables renamed to begin as gBSxxxxxx
+
+
+Change:
+• Multiple pages - Opacity of dulled icon versions of Moon, Sun, Sat, AA, AP
+  changed from 35% to 20% to make inactive state more pronounced
+
+-------------------------------------------------------------------------------
+
+
+V2021-03-27-01
+
+Fix: (Thanks to VK1JA for finding)
+• MainGauges page - Preset 4 button took you incorrectly to preset 3 azimuith
+
+• MoonSun page - Preset 4 button took you incorrectly to preset 3 azimuith
+
+
+
+V2021-03-25-01
+
+Fix:
+• Help Basic Cheeseburger page - corrected spelling of "cheeseburger"!!!  
+
+• MainGauges page - returning from Long touch of Go To button returned
+  incorrectly to Numerals (Main) page.  (Thanks to VK1JA for finding)
+
+• MoonSun page - returning from Short touch of Go To button returned
+  incorrectly to Numerals (Main) page.
+
+• MoonSun page - returning from Long touch of Go To button returned 
+  incorrectly to Numerals (Main) page.
+
+
+• Sat page - returning from Short touch of Go To button returned incorrectly
+  to Numerals (Main) page.
+
+• Sat page - returning from Long touch of Go To button returned incorrectly
+  to Numerals (Main) page.
+
+• Sat page - returning from Long touch of Park button returned incorrectly
+  to MoonSun page.
+
+
+
+
+V2021-03-23-01
+
+New:
+• BigGauges page featuring larger Az/El gauges.
+  Intended for manual (non tracking) operation ie; similar to using a real
+  Yaesu G-5500 controller.
+  Gauges made as large as possible, so there aint no room for tracking status
+  icons etc!
+
+• BigGauges page (5.0") - touch entry points every 15° points around Azimuth
+  and Elevation gauges.
+
+• MainGauges page - can set Presets Tag colours.
+  (Could only do this on Main numerals page only)
+
+• MainGauges page - can set Azimuth Pointer colour.  Requires long touch,
+  center of gauge. (Could only do this on Main numerals page only)
+
+• MainGauges page - can set Elevation Pointer colour.  Requires long touch,
+  center of gauge. (Could only do this on Main numerals page only)
+
+• MainGauges page - can set Azimuth colour. Touch "Az:".
+
+• MainGauges page - can set Elevation colour. Touch "El:".
+
+• MainGauges page - can set Preset Tag colours. Touch any preset tag.
+
+• Config - Screen page - BigGauges page selection button as start screen
+  choice.
+
+• Config - Screen page - Tracking Settings page button added.
+
+• Config - Screen page - Keypad Keep Value button added.
+  This allows you to keep a value when going to the Numeric or ABC keypads.
+  Handy as a reminder what the value that you are changing was, but requires
+  use of the backspace button.  Switching off goes to keypad with blank value.
+
+• TrackSettings page - allows entry of Moon, Sun, Satellite Check Intervals.
+  (Partial support for new feature introduced by Goody 2021-03-20).
+  At present, Arduino code doesn't send values to Nextion with \( command.
+  No big deal... you can send new check interval times to the MCU though.
+
+• About page - HELP Basic Cheeseburger button added + help screen explaining
+  why you are not seeing what you might expect to see.
+
+
+Fix:
+• MainGauges page (5.0") - returning from Long touch of Presets button returned
+  incorrectly to Numerals page.
+
+• Moon/Sun Tracking page (5.0") - returning from Long touch of Presets button
+  returned incorrectly to Numerals page.
+
+
+Change:
+• MainGauges page - Azimuth & Elevation minor calibration marks every 5/10°,
+  being more human friendly to read.
+  Was previously every 6° coz a clock face was used as the original template.
+  Think about it!
+
+• Configuration - Screen page
+  Radio selection buttons replaced by buttons with built-in LED indicators!
+  Tracking Screen page button added.
+  Start screen BigGauges button added
+  Update Rate maximum extended to 1500mS (was 1000mS)
+
+• Config2 page renamed to RotorCal
+
+• RotorCal page - behaviour of Full CW Full CCW Full Up Full Down buttons
+  changed so that highlight disappears after Long touch of SET button has
+  completed.
+
+• RotorCal page - radio toggle selectors replaced with new style buttons.
+
+• Set Colors page - Font selector radio toggle replaced with new style button.
+
+• (Background) gBS...   old Global Button Status variables renamed for
+  consistency with new gBS variables. These variables keep track of button
+  states.
+
+• (Background) Endless cosmetic pixel tweaking to help pretty things up. (?)
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-02-11-01
+
+New: (Suggestion courtesy VK1JA)
+Elevation Gauge hotspots.
+El can be quickly sent to 0°, 30°, 60°, 90°, 120°, 150° & 180° by touching the red markers.
+Manually Data Entry still available by touching middle of gauge dial.
+
+Azimuth Gauge hotspots.
+Az can be quickly sent to 0°, 30°, 60°... 300° & 330° by touching the red markers.
+Manually Data Entry still available by touching middle of gauge dial.
+
+
+Fix: (Thanks VK1JA for report)
+Dim to percentage diagnostic was always visible on satellite tracking page, irrespective of Diagnostics radio button.
+
+
+Change:
+Main Numerals Page - setting Preset Tag colour/font.
+Set page now automatically appears as soon as the Tag is touched, which is now consistent with a long touch of the Nav buttons (Clock & Grid).
+Previously went to set page upon release of Tag.   
+
+
+Change:
+Main Numerals Page - setting Large Azimuth colour/font.
+Set page now automatically appears as soon as "Az" is touched, which is now consistent with a long touch of the Nav buttons (Clock & Grid).
+Previously went to set page upon release of "Az".   
+
+
+Change:
+Main Numerals Page - setting Small Azimuth colour/font.
+Set page now automatically appears as soon as "Az" is touched, which is now consistent with a long touch of the Nav buttons (Clock & Grid).
+Previously went to set page upon release of "Az".   
+
+
+Change:
+Main Numerals Page - setting Elevation colour/font.
+Set page now automatically appears as soon as "El" is touched, which is now consistent with a long touch of the Nav buttons (Clock & Grid).
+Previously went to set page upon release of "El".   
+
+
+Change:
+UDF Help page explanation enhanced with "UDF functionality requires MCU side code customisation."
+(At the risk of pointing out the obvious!)
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-01-07-01
+
+New:
+Screen Saver Dim To percentage value is user definable on Config page.
+Was previously hard-coded to 5%.
+Can now be set 0 - 50%.
+
+Fix:
+Wrong default font for navigation buttons (Clock & Grid) being set for virgin
+EEPROM.  Was font 4, should have been font 5
+
+Fix:
+Reference to (previously removed) Toggle Center button removed from Caution 
+Calibration help screen.
+
+Fix:
+Screens Saver count up value & screen saver value sides swapped on MoonSat &
+Sat pages  as it should have been!
+
+
+------------------------------------------------------------------------------
+
+
+V2021-01-06-01
+
+New:
+Rotator Protocol added to Features page
+GPS 'Wait' added if GPS enabled but waiting for fix on Features Page
+
+Fix:
+Toggle center button removed - Arduino code doesn't appear to process Yaesu
+commands from Nextion.   Never make assumptions!
+[Thanks Robert G0MYX for discovering this]
+It also screwed up calibration(?)
+(Suggestion: create your own User Defined Function and execute it that way)
+
+
+-------------------------------------------------------------------------------
+
+
+V2021-01-01-01
+First release of 5.0" version.
+
+New:
+Has all features and functionality of 3.5" v2020-12-18-01 version plus:
+Larger fonts and buttons all over
+4th Preset added 
+All four Presets appear on main operational pages
+Preset tags colour & font can now be changed
+New enhanced icons for clock type
+User Defined Buttons now have name tags
+Initialize EEPROM button added
+Toggle Center button added
