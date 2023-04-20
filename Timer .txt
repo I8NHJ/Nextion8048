@@ -1,0 +1,211 @@
+/ This is main timer for screen updates
+//
+// Update Debug Tracking status
+//ngMSS.val=gMSS
+// Update Debug Azimuth Detailed Status code
+//ngADS.val=gADS
+// Update Debug Elevation Detailed Status code
+//ngEDS.val=gEDS
+// Update Debug gMSS value
+//ngMSS.val=gMSS
+//--------------------------------------------------------------------------
+// Update Azimuth from API variables
+tAzLg.txt=vAz.txt
+tAzSm.txt=vAz.txt
+//--------------------------------------------------------------------------
+// Update Elevation from API variables
+tEl.txt=vEl.txt
+//--------------------------------------------------------------------------
+// Refresh Status1 and display - this appears over tTitle
+if(vSS1.txt!="")
+{
+  status.txt=vSS1.txt
+  vis status,1
+}else
+{
+  vis status,0
+}
+//--------------------------------------------------------------------------
+// Refresh Status2  and displa
+if(vSS2.txt!="")
+{
+  tStat2.txt=vSS2.txt
+  vis tStat2,1
+}else
+{
+  vis tStat2,0
+}
+//--------------------------------------------------------------------------
+// GPS Status Icon
+if(gFGPS==1) // GPS is enabled
+{
+  if(vGPS.txt!="") //We have a fix
+  {
+    iGPS.pic=201
+    tGPS.txt=vGPS.txt     // Refresh GPS Status
+    tCoord.txt=vCrd.txt     // Refresh Coordinates
+  }
+  else
+  {
+    iGPS.pic=200
+    tCoord.txt="WAITING FOR FIX"
+    tGPS.txt="0"
+  }
+}else
+{
+  iGPS.pic=199  //GPS is not enabled
+}
+//-------------------------------------------------------------------------
+// Clock Status icon
+if(gCS==255)
+  {
+    iClock.pic=81   // Clock Disabled
+  }
+if(gCS==0)
+  {
+    iClock.pic=82   // Clock Free Run
+  }
+if(gCS==1)
+  {
+    iClock.pic=83   // Clock GPS
+  }
+if(gCS==2)
+  {
+    iClock.pic=84   // Clock RTC
+  }
+if(gCS==3)
+  {
+    iClock.pic=85   // Clock Slave
+  }
+if(gCS==4)
+  {
+    iClock.pic=86   // Clock Slave GPS
+  }
+//--------------------------------------------------------------------------
+//update Moon status icon
+if(gFMoon==1)
+{
+  // Determine if Moon is visible
+  x=gMSS&2
+  if(x==2)
+  {
+    gMSSMoon=1    // Set Moon visible flag
+    pMoon.pic=92  //
+  }else
+  {
+    gMSSMoon=0    //
+    pMoon.pic=197  //
+  }
+  // Determine if Moon Tracking is Active
+  x=gMSS&1
+  if(x==1)
+  {
+    gMSSMoonTr=1  // Set Moon Tracking active flag
+    pMoon.pic=93  // Set Moon Icon to Tracking
+  }else
+  {
+    gMSSMoonTr=0
+  }
+}
+else
+{
+  pMoon.pic=94  //
+}
+//--------------------------------------------------------------------------
+// If Sun Tracking Feature is enabled, update Sun status icon
+if(gFSun==1)
+{
+  // Determine if Sun is visible
+  x=gMSS&8
+  if(x==8)
+  {
+    gMSSSun=1     // Set Sun visible flag
+    pSun.pic=89   // Set Sun Icon to Sun
+  }else
+  {
+    gMSSSun=0     // Clear Sun Tracking active flag
+    pSun.pic=198   // Set Sun Icon to dulled
+  }
+  // Determine if Sun Tracking is Active
+  x=gMSS&4
+  if(x==4)
+  {
+    gMSSSunTr=1   // Set Sun Tracking active flag
+    pSun.pic=90   // Set Sun Icon to Tracking
+  }else
+  {
+    gMSSSunTr=0   // Clear Sun Tracking active flag
+  }
+}
+else
+{
+  pSun.pic=91   // Set Sun Icon to Sun
+}
+//--------------------------------------------------------------------------
+// If Sat Tracking Feature is enabled, update Sat status icon
+if(gFSats==1)
+{
+  // Determine if Sat is visible
+  x=gMSS&32
+  if(x==32)
+  {
+    gMSSSat=1     // Set Sat visible flag
+    pSat.pic=107  // Set Sat Icon to Sat visible
+    vis vSAT,1
+    vis vALI,1
+  }else
+  {
+    gMSSSat=0     // Clear Sat visible flag
+    pSat.pic=202  // Set Sat Icon to dulled
+    vis vSAT,0
+    vis vALI,0
+  }
+  // Determine if Sat Tracking is Active
+  x=gMSS&16
+  if(x==16)
+  {
+    gMSSSatTr=1   // Set Sat Tracking active flag
+    pSat.pic=108  // Set Sat Icon to Tracking
+  }else
+  {
+    gMSSSatTr=0   // Clear Sat Tracking active flag
+  }
+}
+else
+{
+  pSat.pic=109  // Set Sat Icon to Sat visible
+}
+//--------------------------------------------------------------------------
+// If Auto Park Feature is enabled, update AP status icon
+if(gFAutoPark==1)
+{
+  x=gVS&32768
+  if(x==32768)
+  {
+    pAutoPark.pic=110
+  }else
+  {
+    pAutoPark.pic=203
+  }
+}
+else
+{
+  pAutoPark.pic=111
+}
+//--------------------------------------------------------------------------
+// If Audible Alert Feature is enabled, show AA status icon
+if(gFAA==1)
+{
+  x=gV2&1
+  if(x==1)
+  {
+    pAA.pic=158
+  }else
+  {
+    pAA.pic=159
+  }
+}
+else
+{
+  pAA.pic=159
+}
